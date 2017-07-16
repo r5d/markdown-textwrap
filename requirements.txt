@@ -1,0 +1,11 @@
+#
+#### packages needed for markdown-textwrap
+#
+#### package dependencies
+mistune
+#### development dependencies
+coverage
+nose
+restructuredtext_lint
+twine
+wheel

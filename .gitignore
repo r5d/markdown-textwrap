@@ -1,0 +1,19 @@
+# general
+*.egg-info/
+build/
+dist/
+*.egg
+*.py[cod]
+__pycache__/
+*.so
+*~
+
+# virtualenv
+bin/
+include/
+local/
+lib/
+man/
+share/
+man/
+pip-selfcheck.json
