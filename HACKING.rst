@@ -12,7 +12,7 @@ First setup virtual environment::
 
 Activate virtual environment::
 
-   source bin/activate
+   source venv/bin/activate
 
 Setup development environment::
 
