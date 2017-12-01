@@ -8,17 +8,15 @@ Setting up the environment
 
 First setup virtual environment::
 
-   cd markdown-link-style
-   virtualenv --python=python3.5 .
+   ./venv.sh
 
 Activate virtual environment::
 
    source bin/activate
 
-Install dependencies::
+Setup development environment::
 
-   pip install -r requirements.txt
-   python setup develop
+  ./bootstrap.sh
 
 Running tests
 -------------
