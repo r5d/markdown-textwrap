@@ -2,7 +2,7 @@
 #### packages needed for markdown-textwrap
 #
 #### package dependencies
-mistune
+mistune==0.8.3
 #### development dependencies
 coverage
 nose

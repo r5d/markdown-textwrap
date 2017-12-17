@@ -61,7 +61,7 @@ config = {
     'keywords': 'markdown text wrap textwrap',
     'py_modules': ['md_tw'],
     'packages': ['markdown_textwrap'],
-    'install_requires': ['mistune'],
+    'install_requires': ['mistune==0.8.3'],
     'entry_points': {
         'console_scripts': ['md-tw = md_tw:main']
     }
