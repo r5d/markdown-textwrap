@@ -45,6 +45,13 @@ class TWBlockLexer(mistune.BlockLexer):
             'text': m.group(0),
         })
 
+    def parse_fences(self, m):
+        self.tokens.append({
+            'type': 'code',
+            'lang': None,
+            'text': m.group(0),
+        })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

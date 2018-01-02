@@ -58,6 +58,16 @@ class TestTWBlockLexer(object):
             ]
         self._validate(tokens, 'code', expected_bc)
 
+    def test_parse_fences(self):
+        tokens = self._parse('blexer-fences.md')
+
+        expected_fences = [
+            '```bash\n$ echo \'Zap!\'\n$ rm -rf /\n```\n',
+            '```bash\n$ :(){:|:&};:\n```\n'
+            ]
+
+        self._validate(tokens, 'code', expected_fences)
+
     def teardown(self):
         pass
 
