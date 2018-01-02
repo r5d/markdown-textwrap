@@ -1,4 +1,4 @@
-#   Copyright © 2017 markdown-textwrap contributors.
+#   Copyright © 2017 rsiddharth <s@ricketyspace.net>.
 #
 #    This file is part of markdown-textwrap.
 #
