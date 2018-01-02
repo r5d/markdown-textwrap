@@ -20,11 +20,11 @@
 
 import textwrap
 
-from mistune import BlockLexer, InlineLexer, Renderer, Markdown
+import mistune
 
 
-class TWBlockLexer(BlockLexer):
-    """Text Wrap Block level lexer for block grammars."""
+class TWBlockLexer(mistune.BlockLexer):
+    """Text Wrap Block lexer for block grammar."""
 
     def __init__(self, rules=None, **kwargs):
         super(TWBlockLexer, self).__init__(rules, **kwargs)
@@ -32,7 +32,7 @@ class TWBlockLexer(BlockLexer):
         self.default_rules = ['paragraph', 'text']
 
 
-class TWInlineLexer(InlineLexer):
+class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""
 
     def __init__(self, renderer, rules=None, **kwargs):
@@ -46,7 +46,7 @@ class TWInlineLexer(InlineLexer):
         return text
 
 
-class TWRenderer(Renderer):
+class TWRenderer(mistune.Renderer):
     """Text Wrap Renderer."""
 
     def __init__(self, **kwargs):
@@ -89,7 +89,7 @@ class TWRenderer(Renderer):
         return '\n{}\n'.format(self._tw_fill(text))
 
 
-class TWMarkdown(Markdown):
+class TWMarkdown(mistune.Markdown):
     """Text Wrap Markdown parser.
     """
 
