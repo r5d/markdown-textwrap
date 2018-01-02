@@ -73,6 +73,60 @@ class TWBlockLexer(mistune.BlockLexer):
             'text': m.group(0)
             })
 
+    def _process_list_item(self, cap, bull):
+        cap = self.rules.list_item.findall(cap)
+
+        _next = False
+        length = len(cap)
+
+        for i in range(length):
+            item = cap[i][0]
+
+            # slurp and remove the bullet
+            space = len(item)
+            bullet = ''
+            bm = self.rules.list_bullet.match(item)
+            if bm:
+                bullet = bm.group(0)
+
+            item = self.rules.list_bullet.sub('', item)
+
+            # outdent
+            if '\n ' in item:
+                space = space - len(item)
+                pattern = re.compile(r'^ {1,%d}' % space, flags=re.M)
+                item = pattern.sub('', item)
+
+            # determine whether item is loose or not
+            loose = _next
+            if not loose and re.search(r'\n\n(?!\s*$)', item):
+                loose = True
+
+            rest = len(item)
+            if i != length - 1 and rest:
+                _next = item[rest-1] == '\n'
+                if not loose:
+                    loose = _next
+
+            if loose:
+                t = 'loose_item_start'
+            else:
+                t = 'list_item_start'
+
+            self.tokens.append({
+                'type': t,
+                'text': bullet,
+                'spaces': len(bullet)
+                })
+
+            # recurse
+            self.parse(item, self.list_rules)
+
+            self.tokens.append({
+                'type': 'list_item_end',
+                'spaces': len(bullet)
+                })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

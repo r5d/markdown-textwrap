@@ -103,6 +103,231 @@ class TestTWBlockLexer(object):
 
         self._validate(tokens, 'hrule', expected_hrs)
 
+    def test_parse_list_block(self):
+        tokens = self._parse('blexer-lists.md')
+
+        def process(tokens):
+            token = tokens.pop(0)
+            while token:
+                type_ = token['type']
+
+                expected_token = None
+                if type_ in expected:
+                    expected_token = expected[type_].pop(0)
+
+                validate(token, expected_token)
+
+                if type_ == 'list_end':
+                    break
+                else:
+                    token = tokens.pop(0)
+
+            return tokens
+
+        def validate(token, expected_token=None):
+            type_ = token['type']
+
+            if type_ == 'list_item_start':
+                assert 'text' in token
+                assert 'spaces' in token
+            elif type_ == 'list_item_end':
+                assert 'spaces' in token
+
+            if not expected_token:
+                return
+
+            if 'text' in token:
+                assert_equal(token['text'], expected_token['text'])
+            if 'spaces' in token:
+                assert_equal(token['spaces'], expected_token['spaces'])
+
+            return
+
+        # test list 1
+        expected = {
+            'list_item_start': [
+                {'text': '+   ', 'spaces': 4},
+                {'text': '+   ', 'spaces': 4},
+                {'text': '+   ', 'spaces': 4}
+                ],
+            'text': [
+                {'text': 'Re: Your Brains'},
+                {'text': 'Shop Vac'},
+                {'text': 'Flickr'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                {'spaces': 4}
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 2
+        expected = {
+            'list_item_start': [
+                {'text': '1.  ', 'spaces': 4},
+                {'text': '2.  ', 'spaces': 4},
+                {'text': '3.  ', 'spaces': 4}
+                ],
+            'text': [
+                {'text': 'First of May'},
+                {'text': 'You Ruined Everything'},
+                {'text': 'Sucker Punch'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                {'spaces': 4}
+                ]
+            }
+        token = process(tokens)
+
+        # test list 3
+        expected = {
+            'list_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'},
+                {'text': 'Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,'},
+                {'text': 'viverra nec, fringilla in, laoreet vitae, risus.'},
+                {'text': 'Donec sit amet nisl. Aliquam semper ipsum sit amet velit.'},
+                {'text': 'Suspendisse id sem consectetuer libero luctus adipiscing.'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 4
+        expected = {
+            'list_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.'},
+                {'text': 'Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,'},
+                {'text': 'viverra nec, fringilla in, laoreet vitae, risus.'},
+                {'text': 'Donec sit amet nisl. Aliquam semper ipsum sit amet velit.'},
+                {'text': 'Suspendisse id sem consectetuer libero luctus adipiscing.'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 5
+        expected = {
+            'loose_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'Codey Monkey'},
+                {'text': 'Tom Cruise Crazy'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(token)
+
+        # test list 5
+        expected = {
+            'loose_item_start': [
+                {'text': '1.  ', 'spaces': 4},
+                {'text': '2.  ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'This is a list item with two paragraphs. Lorem ipsum dolor'},
+                {'text': 'sit amet, consectetuer adipiscing elit. Aliquam hendrerit'},
+                {'text': 'mi posuere lectus.'},
+                {'text': 'Vestibulum enim wisi, viverra nec, fringilla in, laoreet'},
+                {'text': 'vitae, risus. Donec sit amet nisl. Aliquam semper ipsum'},
+                {'text': 'sit amet velit.'},
+                {'text': 'Suspendisse id sem consectetuer libero luctus adipiscing.'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 6
+        expected = {
+            'loose_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'This is a list item with two paragraphs.'},
+                {'text': 'This is the second paragraph in the list item. You\'re'},
+                {'text': 'only required to indent the first line. Lorem ipsum dolor'},
+                {'text': 'sit amet, consectetuer adipiscing elit.'},
+                {'text': 'Another item in the same list.'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 7
+        expected = {
+            'loose_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'A list item with a blockquote:'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 7
+        expected = {
+            'loose_item_start': [
+                {'text': '*   ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'A list item with a code block:'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
+        # test list 7
+        expected = {
+            'loose_item_start': [
+                {'text': '1.  ', 'spaces': 4},
+                {'text': '1.  ', 'spaces': 4},
+                ],
+            'text': [
+                {'text': 'This is a list item has a nested list.'},
+                {'text': 'Lorem ipsum dolor sit amet, consectetuer adipiscing'},
+                {'text': 'elit. Aliquam hendrerit mi posuere lectus.'},
+                ],
+            'list_item_end': [
+                {'spaces': 4},
+                {'spaces': 4},
+                ]
+            }
+        tokens = process(tokens)
+
     def teardown(self):
         pass
 
