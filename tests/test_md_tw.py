@@ -328,6 +328,141 @@ class TestTWBlockLexer(object):
             }
         tokens = process(tokens)
 
+    def test_parse_block_quote(self):
+        tokens = self._parse('blexer-blockquote.md')
+
+        def process(tokens):
+            token = tokens.pop(0)
+            while token:
+                type_ = token['type']
+
+                expected_token = None
+                if type_ in expected:
+                    expected_token = expected[type_].pop(0)
+
+                validate(token, expected_token)
+
+                if type_ == 'block_quote_end':
+                    break
+                else:
+                    token = tokens.pop(0)
+
+            return tokens
+
+        def validate(token, expected_token=None):
+            type_ = token['type']
+
+            if type_ == 'block_quote_start':
+                assert 'text' in token
+                assert 'spaces' in token
+            elif type_ == 'block_quote_end':
+                assert 'spaces' in token
+
+            if not expected_token:
+                return
+
+            if 'text' in token:
+                assert_equal(token['text'], expected_token['text'])
+            if 'spaces' in token:
+                assert_equal(token['spaces'], expected_token['spaces'])
+
+            return
+
+        # test blockquote 1
+        expected = {
+            'block_quote_start': [
+                {'text': '> ', 'spaces': 2},
+                ],
+            'paragraph': [
+                {'text': 'This is a blockquote with two paragraphs. Lorem '
+                     'ipsum dolor sit amet,\nconsectetuer adipiscing '
+                     'elit. Aliquam hendrerit mi posuere lectus.\nVestibulum '
+                'enim wisi, viverra nec, fringilla in, laoreet vitae, risus.'},
+                {'text': 'Donec sit amet nisl. Aliquam semper ipsum sit '
+                     'amet velit. Suspendisse\nid sem consectetuer '
+                'libero luctus adipiscing.'},
+                ],
+            'block_quote_end': [
+                {'spaces': 2},
+                ]
+            }
+        tokens = process(tokens)
+        token = tokens.pop(0) # Remove paragraph after blockquote.
+
+        # test blockquote 2
+        expected = {
+            'block_quote_start': [
+                {'text': '> ', 'spaces': 2},
+                ],
+            'paragraph': [
+                {'text': 'This is a blockquote with two paragraphs. Lorem '
+                     'ipsum dolor sit amet,\nconsectetuer adipiscing '
+                     'elit. Aliquam hendrerit mi posuere lectus.\nVestibulum '
+                'enim wisi, viverra nec, fringilla in, laoreet vitae, risus.'},
+                {'text': 'Donec sit amet nisl. Aliquam semper ipsum sit '
+                     'amet velit. Suspendisse\nid sem consectetuer '
+                'libero luctus adipiscing.'},
+                ],
+            'block_quote_end': [
+                {'spaces': 2},
+                ]
+            }
+        tokens = process(tokens)
+        token = tokens.pop(0) # Remove paragraph after blockquote.
+
+        # test blockquote 3
+        expected = {
+            'block_quote_start': [
+                {'text': '> ', 'spaces': 2},
+                {'text': '> ', 'spaces': 2},
+                ],
+            'paragraph': [
+                {'text': 'This is the first level of quoting.'},
+                {'text': 'This is nested blockquote.'},
+                {'text': 'Back to the first level.'}
+                ],
+            'block_quote_end': [
+                {'spaces': 2},
+                {'spaces': 2},
+                ]
+            }
+        tokens = process(tokens)
+        tokens = process(tokens)
+        token = tokens.pop(0) # Remove paragraph after blockquote.
+
+        # test blockquote 4
+        expected = {
+            'block_quote_start': [
+                {'text': '> ', 'spaces': 2},
+                ],
+            'heading': [
+                {'text': '## This is a header.\n\n'}
+                ],
+            'list_item_start': [
+                {'text': '1.   ', 'spaces': 5},
+                {'text': '2.   ', 'spaces': 5}
+                ],
+            'text': [
+                {'text': 'This is the first list item.'},
+                {'text': 'This is the second list item.'}
+                ],
+            'list_item_end': [
+                {'spaces': 5},
+                {'spaces': 5}
+                ],
+            'paragraph': [
+                {'text': 'Here\'s some example code:'}
+                ],
+            'code': [
+                {'text': '    return shell_exec("echo $input | '
+                     '$markdown_script");'}
+                ],
+            'block_quote_end': [
+                {'spaces': 2},
+                ]
+            }
+        tokens = process(tokens)
+
     def teardown(self):
         pass
 

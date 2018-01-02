@@ -31,6 +31,7 @@ class TWBlockLexer(mistune.BlockLexer):
         super(TWBlockLexer, self).__init__(rules, **kwargs)
 
         # from mistune
+        self._block_quote_leading_pattern = re.compile(r'^ *> ?', flags=re.M)
         self._key_pattern = re.compile(r'\s+')
 
     # from mistune
@@ -126,6 +127,26 @@ class TWBlockLexer(mistune.BlockLexer):
                 'type': 'list_item_end',
                 'spaces': len(bullet)
                 })
+
+    def parse_block_quote(self, m):
+        # slurp and clean leading >
+        quote = ''
+        qm = self._block_quote_leading_pattern.match(m.group(0))
+        if qm:
+            quote = qm.group(0)
+
+        cap = self._block_quote_leading_pattern.sub('', m.group(0))
+
+        self.tokens.append({
+            'type': 'block_quote_start',
+            'text': quote,
+            'spaces': len(quote)
+            })
+        self.parse(cap)
+        self.tokens.append({
+            'type': 'block_quote_end',
+            'spaces': len(quote)
+            })
 
 
 class TWInlineLexer(mistune.InlineLexer):
