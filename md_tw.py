@@ -38,6 +38,13 @@ class TWBlockLexer(mistune.BlockLexer):
         key = mistune.escape(key.lower(), quote=True)
         return self._key_pattern.sub(' ', key)
 
+    def parse_block_code(self, m):
+        self.tokens.append({
+            'type': 'code',
+            'lang': None,
+            'text': m.group(0),
+        })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

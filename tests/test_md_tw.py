@@ -40,8 +40,23 @@ class TestTWBlockLexer(object):
     def setup(self):
         self.bl = TWBlockLexer()
 
+    def _parse(self, file_):
+        txt = _get_data(file_)
+        return self.bl.parse(txt)
 
+    def _validate(self, tokens, type_, expected):
+        for token in tokens:
+            if token['type'] == type_:
+                assert_equal(token['text'], expected.pop(0))
 
+    def test_parse_block_code(self):
+        tokens = self._parse('blexer-block-code.md')
+
+        expected_bc = [
+            '    $ echo \'Zap!\'\n    $ rm -rf /\n\n',
+            '    $ :(){:|:&};:\n\n'
+            ]
+        self._validate(tokens, 'code', expected_bc)
 
     def teardown(self):
         pass
