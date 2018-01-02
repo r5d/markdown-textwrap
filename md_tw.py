@@ -148,6 +148,17 @@ class TWBlockLexer(mistune.BlockLexer):
             'spaces': len(quote)
             })
 
+    def parse_def_links(self, m):
+        key = self._keyify(m.group(1))
+        self.def_links[key] = {
+            'link': m.group(2),
+            'title': m.group(3),
+        }
+        self.tokens.append({
+            'type': 'def_links',
+            'text': m.group(0)
+            })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

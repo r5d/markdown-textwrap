@@ -463,6 +463,23 @@ class TestTWBlockLexer(object):
             }
         tokens = process(tokens)
 
+    def test_parse_def_links(self):
+        tokens = self._parse('blexer-def-links.md')
+
+        expected_dls = [
+            '[bob]: http://bob.name/ "Bob\'s home"\n',
+            '[alice]: <http://alice.name/> "Alice\'s home"\n\n',
+            '[bar]: http://bar.beer/  "Foo Bar Beer"\n\n',
+            '[GNU.org]: http://gnu.org\n\n',
+            '  [1]: http://google.com/        "Google"\n',
+            '  [2]: http://search.yahoo.com/  "Yahoo Search"\n',
+            '  [3]: http://search.msn.com/    "MSN Search"\n\n',
+            '  [google]: http://google.com/        "Google"\n',
+            '  [yahoo]:  http://search.yahoo.com/  "Yahoo Search"\n',
+            '  [msn]:    http://search.msn.com/    "MSN Search"',
+            ]
+        self._validate(tokens, 'def_links', expected_dls)
+
     def teardown(self):
         pass
 
