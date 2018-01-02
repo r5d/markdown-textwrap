@@ -59,6 +59,14 @@ class TWBlockLexer(mistune.BlockLexer):
             'text': m.group(0),
         })
 
+    def parse_lheading(self, m):
+        """Parse setext heading."""
+        self.tokens.append({
+            'type': 'heading',
+            'level': 1 if m.group(2) == '=' else 2,
+            'text': m.group(0),
+        })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

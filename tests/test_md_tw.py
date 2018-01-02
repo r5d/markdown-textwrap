@@ -79,6 +79,17 @@ class TestTWBlockLexer(object):
 
         self._validate(tokens, 'heading', expected_hs)
 
+    def test_parse_lheading(self):
+        tokens = self._parse('blexer-lheading.md')
+
+        expected_lhs = [
+            'Milky Chance\n============\n\n',
+            'Flashed\n-------\n\n',
+            '### Junk Mind\n\n',
+            ]
+
+        self._validate(tokens, 'heading', expected_lhs)
+
     def teardown(self):
         pass
 
