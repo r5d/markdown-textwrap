@@ -677,30 +677,3 @@ class TestTWMarkdown(object):
 
     def teardown(self):
         pass
-
-
-class TestTextWrapParagraphs(object):
-
-    def setup(self):
-        self.md = TWMarkdown()
-
-
-    def test_tw_plain_paragraphs(self):
-        txt = _get_data('paragraphs.md')
-        expected_wrapped_txt = _get_data('paragraphs-wrapped.md')
-
-        wrapped_txt = self.md(txt)
-        assert_equal(wrapped_txt, expected_wrapped_txt)
-
-
-    def test_tw_paragraphs_with_inline(self):
-        txt = _get_data('paragraphs-with-inline.md')
-        expected_wrapped_txt = _get_data(
-            'paragraphs-with-inline-wrapped.md')
-
-        wrapped_txt = self.md(txt)
-        assert_equal(wrapped_txt, expected_wrapped_txt)
-
-
-    def teardown(self):
-        pass
