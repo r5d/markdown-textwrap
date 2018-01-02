@@ -18,6 +18,7 @@
 #   along with markdown-textwrap (see COPYING).  If not, see
 #   <http://www.gnu.org/licenses/>.
 
+import re
 import textwrap
 
 import mistune
@@ -29,6 +30,13 @@ class TWBlockLexer(mistune.BlockLexer):
     def __init__(self, rules=None, **kwargs):
         super(TWBlockLexer, self).__init__(rules, **kwargs)
 
+        # from mistune
+        self._key_pattern = re.compile(r'\s+')
+
+    # from mistune
+    def _keyify(self, key):
+        key = mistune.escape(key.lower(), quote=True)
+        return self._key_pattern.sub(' ', key)
 
 
 class TWInlineLexer(mistune.InlineLexer):
