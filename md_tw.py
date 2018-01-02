@@ -29,7 +29,6 @@ class TWBlockLexer(mistune.BlockLexer):
     def __init__(self, rules=None, **kwargs):
         super(TWBlockLexer, self).__init__(rules, **kwargs)
 
-        self.default_rules = ['paragraph', 'text']
 
 
 class TWInlineLexer(mistune.InlineLexer):

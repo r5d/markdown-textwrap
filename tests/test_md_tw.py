@@ -41,8 +41,6 @@ class TestTWBlockLexer(object):
         self.bl = TWBlockLexer()
 
 
-    def test_default_rules_contents(self):
-        assert_equal(self.bl.default_rules, ['paragraph', 'text'])
 
 
     def teardown(self):
