@@ -480,6 +480,103 @@ class TestTWBlockLexer(object):
             ]
         self._validate(tokens, 'def_links', expected_dls)
 
+    def test_parse_def_footnotes(self):
+        tokens = self._parse('blexer-footnotes.md')
+
+        def process(tokens):
+            token = tokens.pop(0)
+            while token:
+                type_ = token['type']
+
+                expected_token = None
+                if type_ in expected:
+                    expected_token = expected[type_].pop(0)
+
+                validate(token, expected_token)
+
+                if type_ == 'footnote_end':
+                    break
+                else:
+                    token = tokens.pop(0)
+
+            return tokens
+
+        def validate(token, expected_token=None):
+            type_ = token['type']
+
+            if type_ == 'footnote_start':
+                assert 'multiline' in token
+                assert 'spaces' in token
+            elif type_ == 'footnote_end':
+                assert 'spaces' in token
+
+            if not expected_token:
+                return
+
+            if 'text' in token:
+                assert_equal(token['text'], expected_token['text'])
+            if 'spaces' in token:
+                assert_equal(token['spaces'], expected_token['spaces'])
+
+            return
+
+        # test footnote 1
+        expected = {
+            'footnote_start': [
+                {'multiline': False, 'spaces': 0},
+                ],
+            'paragraph': [
+                {'text': 'This phrase has a single line footnote[^foot1].'},
+                {'text': 'Lorem ipsum dolor sit amet, consectetuer'
+                     ' adipiscing elit.'},
+                ],
+            'footnote_end': [
+                {'spaces': 0}
+                ]
+            }
+        tokens = process(tokens)
+
+        # test footnote 2
+        expected = {
+            'footnote_start': [
+                {'multiline': True, 'spaces': 4},
+                ],
+            'paragraph': [
+                {'text': 'This other phrase has a multiline footnote[^foot2].'},
+                {'text': 'Vestibulum enim wisi, viverra nec, fringilla in, '
+                     'laoreet\nvitae, risus. Donec sit amet nisl. Aliquam '
+                'semper ipsum sit amet\nvelit.'},
+                ],
+            'footnote_end': [
+                {'spaces': 4}
+                ]
+            }
+        tokens = process(tokens)
+
+        # test footnote 3
+        expected = {
+            'footnote_start': [
+                {'multiline': True, 'spaces': 3},
+                ],
+            'paragraph': [
+                {'text': 'This phrase has a blockquote in its footnote[^foot3].'},
+                {'text': 'A footnote with blockquotes'},
+                {'text': 'Start of block quote in footnote:'},
+                {'text': 'This is a blockquote with two paragraphs. Lorem'
+                     ' ipsum dolor sit amet,\nconsectetuer adipiscing elit.'
+                ' Aliquam hendrerit mi posuere lectus.\nVestibulum enim wisi,'
+                ' viverra nec, fringilla in, laoreet vitae, risus.'},
+                {'text': 'Donec sit amet nisl. Aliquam semper ipsum sit amet '
+                     'velit. Suspendisse\nid sem consectetuer libero luctus '
+                'adipiscing.'},
+                {'text': 'End of block quote in foot note.'},
+                ],
+            'footnote_end': [
+                {'spaces': 3}
+                ]
+            }
+        tokens = process(tokens)
+
     def teardown(self):
         pass
 

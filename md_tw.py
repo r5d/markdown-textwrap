@@ -159,6 +159,48 @@ class TWBlockLexer(mistune.BlockLexer):
             'text': m.group(0)
             })
 
+    def parse_def_footnotes(self, m):
+        key = self._keyify(m.group(1))
+        if key in self.def_footnotes:
+            # footnote is already defined
+            return
+
+        self.def_footnotes[key] = 0
+
+        text = m.group(2)
+        multiline = False
+        spaces = 0
+        if '\n' in text:
+            multiline = True
+            lines = text.split('\n')
+            whitespace = None
+            for line in lines[1:]:
+                space = len(line) - len(line.lstrip())
+                if space and (not whitespace or space < whitespace):
+                    whitespace = space
+            newlines = [lines[0]]
+            for line in lines[1:]:
+                newlines.append(line[whitespace:])
+            text = '\n'.join(newlines)
+
+            if whitespace:
+                spaces = whitespace
+
+        self.tokens.append({
+            'type': 'footnote_start',
+            'key': key,
+            'multiline': multiline,
+            'spaces': spaces
+        })
+
+        self.parse(text, self.footnote_rules)
+
+        self.tokens.append({
+            'type': 'footnote_end',
+            'key': key,
+            'spaces': spaces
+        })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""
