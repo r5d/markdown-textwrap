@@ -587,11 +587,6 @@ class TestTWInlineLexer(object):
         renderer = Renderer()
         self.il = TWInlineLexer(renderer)
 
-
-    def test_default_rules_contents(self):
-        assert_equal(self.il.default_rules, [])
-
-
     def teardown(self):
         pass
 
