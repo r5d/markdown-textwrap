@@ -67,6 +67,12 @@ class TWBlockLexer(mistune.BlockLexer):
             'text': m.group(0),
         })
 
+    def parse_hrule(self, m):
+        self.tokens.append({
+            'type': 'hrule',
+            'text': m.group(0)
+            })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

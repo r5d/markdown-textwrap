@@ -90,6 +90,19 @@ class TestTWBlockLexer(object):
 
         self._validate(tokens, 'heading', expected_lhs)
 
+    def test_parse_hrule(self):
+        tokens = self._parse('blexer-hrules.md')
+
+        expected_hrs = [
+            '* * *\n\n',
+            '***\n\n',
+            '*****\n\n',
+            '- - -\n\n',
+            '---------------------------------------\n\n'
+            ]
+
+        self._validate(tokens, 'hrule', expected_hrs)
+
     def teardown(self):
         pass
 
