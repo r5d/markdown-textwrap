@@ -577,6 +577,80 @@ class TestTWBlockLexer(object):
             }
         tokens = process(tokens)
 
+    def test_parse_block_html(self):
+        tokens = self._parse('blexer-block-html.md')
+
+        def process(tokens):
+            token = tokens.pop(0)
+            while token:
+                type_ = token['type']
+
+                expected_token = None
+                if type_ in expected:
+                    expected_token = expected[type_].pop(0)
+
+                validate(token, expected_token)
+
+                if type_ in ['open_html', 'close_html']:
+                    break
+                else:
+                    token = tokens.pop(0)
+
+            return tokens
+
+        def validate(token, expected_token=None):
+            type_ = token['type']
+
+            if type_ == 'open_html':
+                assert 'tag' in token
+                assert 'extra' in token
+                assert 'text' in token
+            elif type_ == 'close_html':
+                assert 'text' in token
+
+            if not expected_token:
+                return
+
+            if 'text' in token:
+                assert_equal(token['text'], expected_token['text'])
+            if 'extra' in token:
+                assert_equal(token['extra'], expected_token['extra'])
+            if 'tag' in token:
+                assert_equal(token['tag'], expected_token['tag'])
+            return
+
+        expected = {
+            'open_html': [
+                {
+                    'tag': 'table',
+                    'extra': '',
+                    'text': '\n    <tr>\n        <td>Monte Carlo</td>'
+                    '\n    </tr>\n'
+                },
+            ],
+            }
+        tokens = process(tokens)
+
+        expected = {
+            'open_html': [
+                {
+                    'tag': 'div',
+                    'extra': ' class="parley"',
+                    'text': '\n  <article>\n    '
+                    '<p>A dispute conference; human snafu.</p>\n  '
+                    '</article>\n'
+                }
+            ],
+            }
+        tokens = process(tokens)
+
+        expected = {
+            'close_html': [
+                {'text': '<hr />\n\n'}
+                ]
+            }
+        tokens = process(tokens)
+
     def teardown(self):
         pass
 
