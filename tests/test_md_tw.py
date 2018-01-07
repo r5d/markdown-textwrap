@@ -651,6 +651,45 @@ class TestTWBlockLexer(object):
             }
         tokens = process(tokens)
 
+    def test_parse_paragraph(self):
+        tokens = self._parse('blexer-paragraphs.md')
+
+        expected_ps = [
+            'He used to say that there are only two sources of human '
+            'vice—idleness\nand superstition, and only two '
+            'virtues—activity and intelligence. He\nhimself undertook'
+            ' his daughter\'s education, and to develop these '
+            'two\ncardinal virtues in her gave her lessons in algebra'
+            ' and geometry till\nshe was twenty, and arranged her life'
+            ' so that her whole time was\noccupied. He was himself '
+            'always occupied: writing his memoirs, solving\nproblems '
+            'in higher mathematics, turning snuffboxes on a lathe,'
+            ' working\nin the garden, or superintending the building'
+            ' that was always going on\nat his estate.',
+
+            '“Mere mobs!” repeated his new friend with a snort of'
+            ' scorn. “So you\ntalk about mobs and the working classes'
+            ' as if they were the\nquestion. You’ve got that eternal '
+            'idiotic idea that if anarchy came it\nwould come from the'
+            ' poor. Why should it? The poor have been rebels,\nbut'
+            ' they have never been anarchists; they have more interest'
+            ' than\nanyone else in there being some decent government.'
+            ' The poor man really\nhas a stake in the country.'
+            '  The rich man hasn’t; he can go away to\nNew Guinea'
+            ' in a yacht. The poor have sometimes objected to '
+            'being\ngoverned badly; the rich have always objected to'
+            ' being governed at\nall. Aristocrats were always anarchists'
+            ', as you can see from the\nbarons’ wars.”',
+
+            'Thanking You in Advance. This sounds as if the writer'
+            ' meant, "It will\nnot be worth my while to write to'
+            ' you again." In making your request,\nwrite, "Will you'
+            ' please," or "I shall be obliged," and if anything\nfurther'
+            ' seems necessary write a letter of acknowledgment later.'
+            ]
+
+        self._validate(tokens, 'paragraph', expected_ps)
+
     def teardown(self):
         pass
 
