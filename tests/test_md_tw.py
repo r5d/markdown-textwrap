@@ -18,6 +18,9 @@
 #   along with markdown-textwrap (see COPYING).  If not, see
 #   <http://www.gnu.org/licenses/>.
 
+import os
+import shutil
+import tempfile
 import textwrap
 
 from mistune import Renderer
@@ -707,8 +710,32 @@ class TestTWInlineLexer(object):
 class TestTWRenderer(object):
 
     def setup(self):
-        pass
+        self.md_wrap = TWMarkdown()
 
+        # temp stuff
+        self.tmp_dir = tempfile.mkdtemp(suffix='md-tw-renderer-tests')
+        self.del_tmp_dir = True
+
+    def _write_tmp(self, file_, txt):
+        with open(os.path.join(self.tmp_dir, file_), 'w') as f:
+            f.write(txt)
+
+    def _get(self, file_):
+        return _get_data(file_)
+
+    def _md(self, md_file):
+        txt = self._get(md_file)
+        wrapped = self.md_wrap(txt)
+
+        self._write_tmp(md_file, wrapped)
+        return wrapped
+
+    def _validate(self, txt, expected_txt):
+        txt_lines = txt.split('\n')
+        txt_lines.reverse()
+
+        for line in expected_txt.split('\n'):
+            nose_tools.assert_equal(line, txt_lines.pop())
 
     def test_tw_obj_with_default_width(self):
         renderer = TWRenderer()
@@ -765,9 +792,15 @@ class TestTWRenderer(object):
         nose_tools.assert_equal(getattr(renderer.tw, 'insert_between_paragraphs',
                                  None), None)
 
+    def test_render_paragraph(self):
+        txt = self._md('renderer-paragraphs.md')
+        expected_txt = self._get('renderer-paragraphs-w.md')
+
+        self._validate(txt, expected_txt)
 
     def teardown(self):
-        pass
+        if self.del_tmp_dir:
+            shutil.rmtree(self.tmp_dir)
 
 
 class TestTWMarkdown(object):
