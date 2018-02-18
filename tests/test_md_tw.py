@@ -798,6 +798,12 @@ class TestTWRenderer(object):
 
         self._validate(txt, expected_txt)
 
+    def test_render_block_code(self):
+        txt = self._md('renderer-block-code.md')
+        expected_txt = self._get('renderer-block-code-w.md')
+
+        self._validate(txt, expected_txt)
+
     def teardown(self):
         if self.del_tmp_dir:
             shutil.rmtree(self.tmp_dir)
