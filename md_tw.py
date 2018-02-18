@@ -303,5 +303,22 @@ class TWMarkdown(mistune.Markdown):
         return '{}\n'.format(out.strip('\n'))
 
 
+    def output_block_quote(self):
+        # Set renderer to prepend '> '
+        prefix = self.renderer.tw_get('initial_indent') + '> '
+        self.renderer.tw_set(initial_indent=prefix,
+                             subsequent_indent=prefix)
+
+        # Render block quote
+        rendered_bq = super(TWMarkdown, self).output_block_quote()
+
+        # Remove prefix
+        prefix = self.renderer.tw_get('initial_indent')[:-2]
+        self.renderer.tw_set(initial_indent=prefix,
+                             subsequent_indent=prefix)
+
+        return rendered_bq
+
+
 def main():
     print('USAGE: md_tw 72 file.md file2.md [...]')
