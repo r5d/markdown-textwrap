@@ -272,8 +272,8 @@ class TWMarkdown(mistune.Markdown):
     def parse(self, text):
         out = super(TWMarkdown, self).parse(text)
 
-        # Strip newline at the beginning.
-        return out.lstrip('\n')
+        # Add newline at the end.
+        return '{}\n'.format(out.strip('\n'))
 
 
 def main():
