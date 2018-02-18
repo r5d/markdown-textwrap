@@ -799,8 +799,15 @@ class TestTWRenderer(object):
         self._validate(txt, expected_txt)
 
     def test_render_block_code(self):
+        # Test block code (spaces)
         txt = self._md('renderer-block-code.md')
         expected_txt = self._get('renderer-block-code-w.md')
+
+        self._validate(txt, expected_txt)
+
+        # Test block code (fences)
+        txt = self._md('renderer-fences.md')
+        expected_txt = self._get('renderer-fences-w.md')
 
         self._validate(txt, expected_txt)
 
