@@ -262,6 +262,10 @@ class TWRenderer(mistune.Renderer):
                               lambda line: True)
         return out
 
+    def block_quote(self,  text):
+        out = '{}'.format(text.rstrip('>\n'))
+        return out
+
     def paragraph(self, text):
         out = self._tw_fill(text)
         out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
