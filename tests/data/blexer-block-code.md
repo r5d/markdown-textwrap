@@ -7,4 +7,4 @@ Let's have some chaos:
 >
 >     $ :(){:|:&};:
 >
-> For more look at jaramil.dyne.org. He's awesome.
+> For more look at jaromil.dyne.org. He's awesome.
