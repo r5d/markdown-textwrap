@@ -757,11 +757,11 @@ class TestTWRenderer(object):
         nose_tools.assert_equal(renderer.tw.width, 80)
 
 
-    def test_tw_set_options_with_valid_opts(self):
+    def test_tw_set_with_valid_opts(self):
         renderer  = TWRenderer()
 
         # Set valid options
-        renderer._tw_set_options(
+        renderer.tw_set(
             width=80,
             initial_indent='> ',
             subsequent_indent=' ',
@@ -774,11 +774,11 @@ class TestTWRenderer(object):
         nose_tools.assert_equal(renderer.tw.drop_whitespace, False)
 
 
-    def test_tw_set_options_with_invalid_opts(self):
+    def test_tw_set_with_invalid_opts(self):
         renderer = TWRenderer()
 
         # Set invalid options
-        renderer._tw_set_options(
+        renderer.tw_set(
             erase_bumps=True,
             destroy_ampersands=False,
             end_width='வருகிறேன்',

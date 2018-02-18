@@ -225,7 +225,7 @@ class TWRenderer(mistune.Renderer):
         )
 
 
-    def _tw_set_options(self, **kwargs):
+    def tw_set(self, **kwargs):
         """
         Set options for the local textwrap.TextWrapper instance.
         """
@@ -248,7 +248,7 @@ class TWRenderer(mistune.Renderer):
     def _tw_fill(self, text, **kwargs):
         """Wrap text.
         """
-        self._tw_set_options(**kwargs)
+        self.tw_set(**kwargs)
         return self.tw.fill(text)
 
 
