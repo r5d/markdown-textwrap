@@ -21,7 +21,7 @@
 import textwrap
 
 from mistune import Renderer
-from nose.tools import assert_equal
+from nose import tools as nose_tools
 from pkg_resources import resource_string, resource_filename
 
 from md_tw import TWBlockLexer, TWInlineLexer, TWRenderer, TWMarkdown
@@ -47,7 +47,7 @@ class TestTWBlockLexer(object):
     def _validate(self, tokens, type_, expected):
         for token in tokens:
             if token['type'] == type_:
-                assert_equal(token['text'], expected.pop(0))
+                nose_tools.assert_equal(token['text'], expected.pop(0))
 
     def test_parse_block_code(self):
         tokens = self._parse('blexer-block-code.md')
@@ -137,9 +137,9 @@ class TestTWBlockLexer(object):
                 return
 
             if 'text' in token:
-                assert_equal(token['text'], expected_token['text'])
+                nose_tools.assert_equal(token['text'], expected_token['text'])
             if 'spaces' in token:
-                assert_equal(token['spaces'], expected_token['spaces'])
+                nose_tools.assert_equal(token['spaces'], expected_token['spaces'])
 
             return
 
@@ -362,9 +362,9 @@ class TestTWBlockLexer(object):
                 return
 
             if 'text' in token:
-                assert_equal(token['text'], expected_token['text'])
+                nose_tools.assert_equal(token['text'], expected_token['text'])
             if 'spaces' in token:
-                assert_equal(token['spaces'], expected_token['spaces'])
+                nose_tools.assert_equal(token['spaces'], expected_token['spaces'])
 
             return
 
@@ -514,9 +514,9 @@ class TestTWBlockLexer(object):
                 return
 
             if 'text' in token:
-                assert_equal(token['text'], expected_token['text'])
+                nose_tools.assert_equal(token['text'], expected_token['text'])
             if 'spaces' in token:
-                assert_equal(token['spaces'], expected_token['spaces'])
+                nose_tools.assert_equal(token['spaces'], expected_token['spaces'])
 
             return
 
@@ -612,11 +612,11 @@ class TestTWBlockLexer(object):
                 return
 
             if 'text' in token:
-                assert_equal(token['text'], expected_token['text'])
+                nose_tools.assert_equal(token['text'], expected_token['text'])
             if 'extra' in token:
-                assert_equal(token['extra'], expected_token['extra'])
+                nose_tools.assert_equal(token['extra'], expected_token['extra'])
             if 'tag' in token:
-                assert_equal(token['tag'], expected_token['tag'])
+                nose_tools.assert_equal(token['tag'], expected_token['tag'])
             return
 
         expected = {
@@ -717,7 +717,7 @@ class TestTWRenderer(object):
         assert isinstance(renderer.tw, textwrap.TextWrapper)
 
         # Check its width
-        assert_equal(renderer.tw.width, 72)
+        nose_tools.assert_equal(renderer.tw.width, 72)
 
 
     def test_tw_obj_with_custom_width(self):
@@ -727,7 +727,7 @@ class TestTWRenderer(object):
         assert isinstance(renderer.tw, textwrap.TextWrapper)
 
         # Check its width
-        assert_equal(renderer.tw.width, 80)
+        nose_tools.assert_equal(renderer.tw.width, 80)
 
 
     def test_tw_set_options_with_valid_opts(self):
@@ -741,10 +741,10 @@ class TestTWRenderer(object):
             drop_whitespace=False)
 
         # Confirm options are set.
-        assert_equal(renderer.tw.width, 80)
-        assert_equal(renderer.tw.initial_indent, '> ')
-        assert_equal(renderer.tw.subsequent_indent, ' ')
-        assert_equal(renderer.tw.drop_whitespace, False)
+        nose_tools.assert_equal(renderer.tw.width, 80)
+        nose_tools.assert_equal(renderer.tw.initial_indent, '> ')
+        nose_tools.assert_equal(renderer.tw.subsequent_indent, ' ')
+        nose_tools.assert_equal(renderer.tw.drop_whitespace, False)
 
 
     def test_tw_set_options_with_invalid_opts(self):
@@ -758,11 +758,11 @@ class TestTWRenderer(object):
             insert_between_paragraphs='time bombs')
 
         # Confirm options are not set.
-        assert_equal(getattr(renderer.tw, 'erase_bumps', None), None)
-        assert_equal(getattr(renderer.tw, 'destroy_ampersands',
+        nose_tools.assert_equal(getattr(renderer.tw, 'erase_bumps', None), None)
+        nose_tools.assert_equal(getattr(renderer.tw, 'destroy_ampersands',
                                  None), None)
-        assert_equal(getattr(renderer.tw, 'end_width', None), None)
-        assert_equal(getattr(renderer.tw, 'insert_between_paragraphs',
+        nose_tools.assert_equal(getattr(renderer.tw, 'end_width', None), None)
+        nose_tools.assert_equal(getattr(renderer.tw, 'insert_between_paragraphs',
                                  None), None)
 
 
