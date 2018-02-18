@@ -256,6 +256,11 @@ class TWRenderer(mistune.Renderer):
         self.tw_set(**kwargs)
         return self.tw.fill(text)
 
+    def block_code(self, code, lang=None):
+        out = '{}'.format(code)
+        out = textwrap.indent(out, self.tw_get('initial_indent'),
+                              lambda line: True)
+        return out
 
     def paragraph(self, text):
         wrapped = self._tw_fill(text)
