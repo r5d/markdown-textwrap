@@ -224,6 +224,11 @@ class TWRenderer(mistune.Renderer):
             width=kwargs.get('tw_width', 72)
         )
 
+    def tw_get(self, attr):
+        """Get attribute from the local textwrap.TextWrapper instance.
+        """
+        return getattr(self.tw, attr, None)
+
 
     def tw_set(self, **kwargs):
         """
