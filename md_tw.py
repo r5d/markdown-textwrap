@@ -285,8 +285,19 @@ class TWMarkdown(mistune.Markdown):
             TWBlockLexer
         )
 
+    def _clean_ts(self, lines):
+        out = ''
+
+        for line in lines.split('\n'):
+            out += line.rstrip() + '\n'
+
+        return out
+
     def parse(self, text):
         out = super(TWMarkdown, self).parse(text)
+
+        # Remove trailing spaces from all lines.
+        out = self._clean_ts(out)
 
         # Add newline at the end.
         return '{}\n'.format(out.strip('\n'))
