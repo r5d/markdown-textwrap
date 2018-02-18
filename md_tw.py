@@ -331,6 +331,10 @@ class TWMarkdown(mistune.Markdown):
 
         return rendered_bq
 
+    def output_block_html(self):
+        text = self.token['text']
+        return self.renderer.block_html(text)
+
 
 def main():
     print('USAGE: md_tw 72 file.md file2.md [...]')
