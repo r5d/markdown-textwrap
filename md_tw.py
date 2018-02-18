@@ -263,9 +263,9 @@ class TWRenderer(mistune.Renderer):
         return out
 
     def paragraph(self, text):
-        wrapped = self._tw_fill(text)
-
-        return '{}\n\n'.format(wrapped)
+        out = self._tw_fill(text)
+        out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
+        return out
 
 
 class TWMarkdown(mistune.Markdown):
