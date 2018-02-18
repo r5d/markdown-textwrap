@@ -272,6 +272,12 @@ class TWRenderer(mistune.Renderer):
         out = '{}'.format(text.rstrip('>\n'))
         return out
 
+    def block_html(self, html):
+        out = '{}'.format(html)
+        out = textwrap.indent(out, self.tw_get('initial_indent'),
+                              lambda line: True)
+        return out
+
     def paragraph(self, text):
         out = self._tw_fill(text)
         out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
