@@ -208,9 +208,6 @@ class TWInlineLexer(mistune.InlineLexer):
     def __init__(self, renderer, rules=None, **kwargs):
         super(TWInlineLexer, self).__init__(renderer, rules, **kwargs)
 
-        # No inline rules.
-        self.default_rules = []
-
     def output(self, text, rules=None):
         # Don't parse inline text.
         return text
