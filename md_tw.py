@@ -253,7 +253,9 @@ class TWRenderer(mistune.Renderer):
 
 
     def paragraph(self, text):
-        return '\n{}\n'.format(self._tw_fill(text))
+        wrapped = self._tw_fill(text)
+
+        return '{}\n\n'.format(wrapped)
 
 
 class TWMarkdown(mistune.Markdown):
