@@ -201,6 +201,12 @@ class TWBlockLexer(mistune.BlockLexer):
             'spaces': spaces
         })
 
+    def parse_block_html(self, m):
+        self.tokens.append({
+            'type': 'block_html',
+            'text': m.group(0)
+            })
+
 
 class TWInlineLexer(mistune.InlineLexer):
     """Text Wrap Inline level lexer for inline gramars."""

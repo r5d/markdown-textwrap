@@ -594,7 +594,7 @@ class TestTWBlockLexer(object):
 
                 validate(token, expected_token)
 
-                if type_ in ['open_html', 'close_html']:
+                if type_ == 'block_html':
                     break
                 else:
                     token = tokens.pop(0)
@@ -604,51 +604,36 @@ class TestTWBlockLexer(object):
         def validate(token, expected_token=None):
             type_ = token['type']
 
-            if type_ == 'open_html':
-                assert 'tag' in token
-                assert 'extra' in token
-                assert 'text' in token
-            elif type_ == 'close_html':
-                assert 'text' in token
-
             if not expected_token:
                 return
 
             if 'text' in token:
                 nose_tools.assert_equal(token['text'], expected_token['text'])
-            if 'extra' in token:
-                nose_tools.assert_equal(token['extra'], expected_token['extra'])
-            if 'tag' in token:
-                nose_tools.assert_equal(token['tag'], expected_token['tag'])
             return
 
         expected = {
-            'open_html': [
+            'block_html': [
                 {
-                    'tag': 'table',
-                    'extra': '',
-                    'text': '\n    <tr>\n        <td>Monte Carlo</td>'
-                    '\n    </tr>\n'
+                    'text': '<table>\n    <tr>\n        <td>Monte Carlo</td>'
+                    '\n    </tr>\n</table>\n\n'
                 },
             ],
             }
         tokens = process(tokens)
 
         expected = {
-            'open_html': [
+            'block_html': [
                 {
-                    'tag': 'div',
-                    'extra': ' class="parley"',
-                    'text': '\n  <article>\n    '
+                    'text': '<div class="parley">\n  <article>\n    '
                     '<p>A dispute conference; human snafu.</p>\n  '
-                    '</article>\n'
+                    '</article>\n</div>\n\n'
                 }
             ],
             }
         tokens = process(tokens)
 
         expected = {
-            'close_html': [
+            'block_html': [
                 {'text': '<hr />\n\n'}
                 ]
             }
