@@ -331,6 +331,14 @@ class TWMarkdown(mistune.Markdown):
         if subseq:
             self.renderer.tw_set(subsequent_indent=p)
 
+    def _remove_prefix(self, length, initial=True, subseq=True):
+        p = self.renderer.tw_get('initial_indent')[:-length]
+
+        if initial:
+            self.renderer.tw_set(initial_indent=p)
+        if subseq:
+            self.renderer.tw_set(subsequent_indent=p)
+
     def output_block_quote(self):
         # Set renderer to prepend '> '
         prefix = self.renderer.tw_get('initial_indent') + '> '
