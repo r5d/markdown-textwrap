@@ -75,6 +75,7 @@ class TWBlockLexer(mistune.BlockLexer):
             })
 
     def _process_list_item(self, cap, bull):
+        # from mistune with minor changes.
         cap = self.rules.list_item.findall(cap)
 
         _next = False
