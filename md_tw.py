@@ -355,6 +355,47 @@ class TWMarkdown(mistune.Markdown):
         text = self.token['text']
         return self.renderer.block_html(text)
 
+    def output_list_item(self):
+        i_indent = False # initial indent
+        s_indent = True # subsequent indent
+        indent = ''.ljust(self.token['spaces'])
+
+        def process():
+            nonlocal i_indent
+
+            txt = ''
+            if self.token['type'] == 'text':
+                txt = self.renderer.tw_fill(self.tok_text())
+            else:
+                txt = self.tok()
+
+            if not i_indent:
+                txt = txt.lstrip()
+
+                # Set initial indent after processing first item
+                i_indent = True
+                self._add_prefix(indent, i_indent, s_indent)
+
+            return txt
+
+        # Add bullet
+        body = self.renderer.tw_get('initial_indent') + self.token['text']
+
+        # Set prefix
+        prefix = self._add_prefix(indent, i_indent, s_indent)
+
+        # Process list item
+        while self.pop()['type'] != 'list_item_end':
+            body += process()
+
+        # Render list item
+        rendered_li = self.renderer.list_item(body)
+
+        # Remove prefix
+        self._remove_prefix(len(indent), i_indent, s_indent)
+
+        return rendered_li
+
 
 def main():
     print('USAGE: md_tw 72 file.md file2.md [...]')
