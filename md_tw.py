@@ -284,6 +284,10 @@ class TWRenderer(mistune.Renderer):
         return out
 
 
+    def list(self, body, ordered=True):
+        out = '{}\n\n\n'.format(body.rstrip())
+        return out
+
     def list_item(self, text):
         out = '{}\n'.format(text)
         return out
