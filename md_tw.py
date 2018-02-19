@@ -284,6 +284,11 @@ class TWRenderer(mistune.Renderer):
         return out
 
 
+    def list_item(self, text):
+        out = '{}\n'.format(text)
+        return out
+
+
 class TWMarkdown(mistune.Markdown):
     """Text Wrap Markdown parser.
     """
