@@ -323,6 +323,13 @@ class TWMarkdown(mistune.Markdown):
         # Add newline at the end.
         return '{}\n'.format(out.strip('\n'))
 
+    def _add_prefix(self, prefix, initial=True, subseq=True):
+        p = self.renderer.tw_get('initial_indent') + prefix
+
+        if initial:
+            self.renderer.tw_set(initial_indent=p)
+        if subseq:
+            self.renderer.tw_set(subsequent_indent=p)
 
     def output_block_quote(self):
         # Set renderer to prepend '> '
