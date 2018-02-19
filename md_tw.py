@@ -256,7 +256,7 @@ class TWRenderer(mistune.Renderer):
             setattr(self.tw, opt, val)
 
 
-    def _tw_fill(self, text, **kwargs):
+    def tw_fill(self, text, **kwargs):
         """Wrap text.
         """
         self.tw_set(**kwargs)
@@ -279,7 +279,7 @@ class TWRenderer(mistune.Renderer):
         return out
 
     def paragraph(self, text):
-        out = self._tw_fill(text)
+        out = self.tw_fill(text)
         out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
         return out
 
