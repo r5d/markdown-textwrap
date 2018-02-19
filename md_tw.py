@@ -340,18 +340,14 @@ class TWMarkdown(mistune.Markdown):
             self.renderer.tw_set(subsequent_indent=p)
 
     def output_block_quote(self):
-        # Set renderer to prepend '> '
-        prefix = self.renderer.tw_get('initial_indent') + '> '
-        self.renderer.tw_set(initial_indent=prefix,
-                             subsequent_indent=prefix)
+        # Add prefix
+        self._add_prefix('> ')
 
         # Render block quote
         rendered_bq = super(TWMarkdown, self).output_block_quote()
 
         # Remove prefix
-        prefix = self.renderer.tw_get('initial_indent')[:-2]
-        self.renderer.tw_set(initial_indent=prefix,
-                             subsequent_indent=prefix)
+        self._remove_prefix(len('> '))
 
         return rendered_bq
 
