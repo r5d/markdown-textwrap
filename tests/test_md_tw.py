@@ -805,6 +805,10 @@ class TestTWRenderer(object):
         self._validate(txt, expected_txt)
 
     def teardown(self):
+        pass
+
+    @classmethod
+    def teardown_class(self):
         if self.del_tmp_dir:
             shutil.rmtree(self.tmp_dir)
 
