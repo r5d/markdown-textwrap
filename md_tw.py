@@ -357,12 +357,11 @@ class TWMarkdown(mistune.Markdown):
         return self.renderer.block_html(text)
 
     def output_list_item(self):
-        i_indent = False # initial indent
-        s_indent = True # subsequent indent
+        rm_i_indent = True # Remove initial indent.
         indent = ''.ljust(self.token['spaces'])
 
         def process():
-            nonlocal i_indent
+            nonlocal rm_i_indent
 
             txt = ''
             if self.token['type'] == 'text':
@@ -370,12 +369,11 @@ class TWMarkdown(mistune.Markdown):
             else:
                 txt = self.tok()
 
-            if not i_indent:
+            if rm_i_indent:
                 txt = txt.lstrip()
 
-                # Set initial indent after processing first item
-                i_indent = True
-                self._add_prefix(indent, i_indent, s_indent)
+                # Don't remove initial indent after processing first item.
+                rm_i_indent = False
 
             return txt
 
@@ -383,7 +381,7 @@ class TWMarkdown(mistune.Markdown):
         body = self.renderer.tw_get('initial_indent') + self.token['text']
 
         # Set prefix
-        prefix = self._add_prefix(indent, i_indent, s_indent)
+        prefix = self._add_prefix(indent)
 
         # Process list item
         while self.pop()['type'] != 'list_item_end':
@@ -393,7 +391,7 @@ class TWMarkdown(mistune.Markdown):
         rendered_li = self.renderer.list_item(body)
 
         # Remove prefix
-        self._remove_prefix(len(indent), i_indent, s_indent)
+        self._remove_prefix(len(indent))
 
         return rendered_li
 
