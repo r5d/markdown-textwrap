@@ -694,12 +694,14 @@ class TestTWInlineLexer(object):
 
 class TestTWRenderer(object):
 
-    def setup(self):
-        self.md_wrap = TWMarkdown()
-
+    @classmethod
+    def setup_class(self):
         # temp stuff
         self.tmp_dir = tempfile.mkdtemp(suffix='md-tw-renderer-tests')
-        self.del_tmp_dir = True
+        self.del_tmp_dir = False
+
+    def setup(self):
+        self.md_wrap = TWMarkdown()
 
     def _write_tmp(self, file_, txt):
         with open(os.path.join(self.tmp_dir, file_), 'w') as f:
