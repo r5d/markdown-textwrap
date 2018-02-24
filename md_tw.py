@@ -396,20 +396,18 @@ class TWMarkdown(mistune.Markdown):
         return rendered_li
 
     def output_loose_item(self):
-        i_indent = False # initial indent
-        s_indent = True # subsequent indent
+        rm_i_indent = True # Remove initial indent.
         indent = ''.ljust(self.token['spaces'])
 
         def process():
-            nonlocal i_indent
+            nonlocal rm_i_indent
 
             txt = self.tok()
-            if not i_indent:
+            if rm_i_indent:
                 txt = txt.lstrip()
 
-                # Set initial indent after processing first item
-                i_indent = True
-                self._add_prefix(indent, i_indent, s_indent)
+                # Don't remove initial indent after processing first item.
+                rm_i_indent = False
 
             return txt
 
@@ -423,7 +421,7 @@ class TWMarkdown(mistune.Markdown):
         self.renderer.tw_set(width=item_width)
 
         # Set prefix
-        prefix = self._add_prefix(indent, i_indent, s_indent)
+        prefix = self._add_prefix(indent)
 
         while self.pop()['type'] != 'list_item_end':
             body += process()
@@ -432,7 +430,7 @@ class TWMarkdown(mistune.Markdown):
         rendered_li = self.renderer.list_item(body)
 
         # Remove prefix
-        self._remove_prefix(len(indent), i_indent, s_indent)
+        self._remove_prefix(len(indent))
 
         # Revert width
         self.renderer.tw_set(width=o_width)
