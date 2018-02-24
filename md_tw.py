@@ -416,6 +416,12 @@ class TWMarkdown(mistune.Markdown):
         # Add bullet
         body = self.renderer.tw_get('initial_indent') + self.token['text']
 
+        # Set width
+        o_width = self.renderer.tw_get('width')
+        item_width = (o_width
+                          - len(self.renderer.tw_get('initial_indent')))
+        self.renderer.tw_set(width=item_width)
+
         # Set prefix
         prefix = self._add_prefix(indent, i_indent, s_indent)
 
@@ -427,6 +433,9 @@ class TWMarkdown(mistune.Markdown):
 
         # Remove prefix
         self._remove_prefix(len(indent), i_indent, s_indent)
+
+        # Revert width
+        self.renderer.tw_set(width=o_width)
 
         return rendered_li
 
