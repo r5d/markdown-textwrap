@@ -804,6 +804,12 @@ class TestTWRenderer(object):
 
         self._validate(txt, expected_txt)
 
+    def test_render_list(self):
+        txt = self._md('renderer-lists.md')
+        expected_txt = self._get('renderer-lists-w.md')
+
+        self._validate(txt, expected_txt)
+
     def teardown(self):
         pass
 
