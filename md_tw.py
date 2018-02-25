@@ -279,6 +279,13 @@ class TWRenderer(mistune.Renderer):
                               lambda line: True)
         return out
 
+
+    def header(self, text, level, raw=None):
+        out = '{}'.format(text)
+
+        return out
+
+
     def paragraph(self, text):
         out = self.tw_fill(text)
         out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
