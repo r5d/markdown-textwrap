@@ -819,6 +819,11 @@ class TestTWRenderer(object):
         expected_txt = self._get('renderer-lheading-w.md')
         self._validate(txt, expected_txt)
 
+    def test_render_hrule(self):
+        txt = self._md('renderer-hrules.md')
+        expected_txt = self._get('renderer-hrules-w.md')
+        self._validate(txt, expected_txt)
+
     def teardown(self):
         pass
 
