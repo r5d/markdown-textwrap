@@ -285,6 +285,10 @@ class TWRenderer(mistune.Renderer):
 
         return out
 
+    def hrule(self, hr):
+        out = '{}'.format(hr)
+
+        return out
 
     def paragraph(self, text):
         out = self.tw_fill(text)
