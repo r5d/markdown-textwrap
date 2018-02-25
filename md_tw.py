@@ -457,6 +457,9 @@ class TWMarkdown(mistune.Markdown):
 
         return rendered_li
 
+    def output_hrule(self):
+        return self.renderer.hrule(self.token['text'])
+
 
 def main():
     print('USAGE: md_tw 72 file.md file2.md [...]')
