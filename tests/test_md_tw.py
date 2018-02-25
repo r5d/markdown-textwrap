@@ -810,6 +810,15 @@ class TestTWRenderer(object):
 
         self._validate(txt, expected_txt)
 
+    def test_render_header(self):
+        txt = self._md('renderer-heading.md')
+        expected_txt = self._get('renderer-heading-w.md')
+        self._validate(txt, expected_txt)
+
+        txt = self._md('renderer-lheading.md')
+        expected_txt = self._get('renderer-lheading-w.md')
+        self._validate(txt, expected_txt)
+
     def teardown(self):
         pass
 
