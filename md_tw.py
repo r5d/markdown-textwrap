@@ -282,12 +282,10 @@ class TWRenderer(mistune.Renderer):
 
     def header(self, text, level, raw=None):
         out = '{}'.format(text)
-
         return out
 
     def hrule(self, hr):
         out = '{}'.format(hr)
-
         return out
 
     def paragraph(self, text):
@@ -295,13 +293,16 @@ class TWRenderer(mistune.Renderer):
         out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
         return out
 
-
     def list(self, body, ordered=True):
         out = '{}\n\n\n'.format(body.rstrip())
         return out
 
     def list_item(self, text):
         out = '{}\n'.format(text)
+        return out
+
+    def def_link(self, text):
+        out = '{}'.format(text)
         return out
 
 
