@@ -466,7 +466,7 @@ class TestTWBlockLexer(object):
             }
         tokens = process(tokens)
 
-    def test_parse_def_links(self):
+    def test_parse_def_link(self):
         tokens = self._parse('blexer-def-links.md')
 
         expected_dls = [
@@ -481,7 +481,7 @@ class TestTWBlockLexer(object):
             '  [yahoo]:  http://search.yahoo.com/  "Yahoo Search"\n',
             '  [msn]:    http://search.msn.com/    "MSN Search"',
             ]
-        self._validate(tokens, 'def_links', expected_dls)
+        self._validate(tokens, 'def_link', expected_dls)
 
     def test_parse_def_footnotes(self):
         tokens = self._parse('blexer-footnotes.md')

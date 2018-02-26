@@ -156,7 +156,7 @@ class TWBlockLexer(mistune.BlockLexer):
             'title': m.group(3),
         }
         self.tokens.append({
-            'type': 'def_links',
+            'type': 'def_link',
             'text': m.group(0)
             })
 
