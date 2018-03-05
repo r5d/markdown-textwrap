@@ -210,7 +210,7 @@ class TWBlockLexer(mistune.BlockLexer):
 
 
 class TWInlineLexer(mistune.InlineLexer):
-    """Text Wrap Inline level lexer for inline gramars."""
+    """Text Wrap Inline level lexer for inline grammars."""
 
     def __init__(self, renderer, rules=None, **kwargs):
         super(TWInlineLexer, self).__init__(renderer, rules, **kwargs)
@@ -256,7 +256,6 @@ class TWRenderer(mistune.Renderer):
             # Set option
             setattr(self.tw, opt, val)
 
-
     def tw_fill(self, text, **kwargs):
         """Wrap text.
         """
@@ -278,7 +277,6 @@ class TWRenderer(mistune.Renderer):
         out = textwrap.indent(out, self.tw_get('initial_indent'),
                               lambda line: True)
         return out
-
 
     def header(self, text, level, raw=None):
         out = '{}'.format(text)
