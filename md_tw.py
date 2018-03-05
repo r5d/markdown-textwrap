@@ -467,6 +467,53 @@ class TWMarkdown(mistune.Markdown):
     def output_def_link(self):
         return self.renderer.def_link(self.token['text'])
 
+    def output_footnote(self):
+        rm_i_indent = True
+        indent = ''.ljust(self.token['spaces'])
+
+        def process():
+            nonlocal rm_i_indent
+
+            txt = self.tok()
+            if rm_i_indent:
+                txt = txt.lstrip()
+
+                # Don't remove initial indent after processing first item.
+                rm_i_indent = False
+
+            return txt
+
+        # Take note of footnote key.
+        key = self.token['key']
+
+        # Add current initial indent
+        body = self.renderer.tw_get('initial_indent')
+
+        # Set width
+        o_width = self.renderer.tw_get('width')
+        item_width = (o_width
+                          - (len(self.renderer.tw_get('initial_indent'))
+                                 # Account for '[^key]: '
+                                 + (len(key) + 5)))
+        self.renderer.tw_set(width=item_width)
+
+        # Set prefix
+        prefix =  self._add_prefix(indent)
+
+        while self.pop()['type'] != 'footnote_end':
+            body += process()
+        body = body.rstrip() + '\n'
+
+        rendered_fn = self.renderer.footnote_item(key, body)
+
+        # Remove prefix
+        self._remove_prefix(len(indent))
+
+        # Revert width
+        self.renderer.tw_set(width=o_width)
+
+        return rendered_fn
+
 
 def main():
     print('USAGE: md_tw 72 file.md file2.md [...]')
