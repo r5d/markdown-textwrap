@@ -269,7 +269,7 @@ class TWRenderer(mistune.Renderer):
         return out
 
     def block_quote(self,  text):
-        out = '{}'.format(text.rstrip('>\n'))
+        out = '{}\n'.format(text.rstrip('>\n'))
         return out
 
     def block_html(self, html):
