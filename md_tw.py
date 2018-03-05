@@ -304,6 +304,10 @@ class TWRenderer(mistune.Renderer):
         out = '{}'.format(text)
         return out
 
+    def footnote_item(self, key, text):
+        out = '[^{}]: {}\n'.format(key, text)
+        return out
+
 
 class TWMarkdown(mistune.Markdown):
     """Text Wrap Markdown parser.
