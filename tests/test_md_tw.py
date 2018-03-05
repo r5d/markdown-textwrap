@@ -485,7 +485,6 @@ class TestTWBlockLexer(object):
 
     def test_parse_def_footnotes(self):
         tokens = self._parse('blexer-footnotes.md')
-
         def process(tokens):
             token = tokens.pop(0)
             while token:
@@ -827,6 +826,11 @@ class TestTWRenderer(object):
     def test_render_def_link(self):
         txt = self._md('renderer-def-links.md')
         expected_txt = self._get('renderer-def-links-w.md')
+        self._validate(txt, expected_txt)
+
+    def test_render_footnote_item(self):
+        txt = self._md('renderer-footnotes.md')
+        expected_txt = self._get('renderer-footnotes-w.md')
         self._validate(txt, expected_txt)
 
     def teardown(self):
