@@ -286,17 +286,18 @@ class TWRenderer(mistune.Renderer):
         out = '{}'.format(hr)
         return out
 
-    def paragraph(self, text):
-        out = self.tw_fill(text)
-        out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').strip())
-        return out
-
     def list(self, body, ordered=True):
         out = '{}\n\n\n'.format(body.rstrip())
         return out
 
     def list_item(self, text):
         out = '{}\n'.format(text)
+        return out
+
+    def paragraph(self, text):
+        out = self.tw_fill(text)
+        out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').rstrip())
+
         return out
 
     def def_link(self, text):
