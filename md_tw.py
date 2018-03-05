@@ -161,7 +161,7 @@ class TWBlockLexer(mistune.BlockLexer):
             })
 
     def parse_def_footnotes(self, m):
-        key = self._keyify(m.group(1))
+        key = m.group(1)
         if key in self.def_footnotes:
             # footnote is already defined
             return
