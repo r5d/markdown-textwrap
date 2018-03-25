@@ -18,6 +18,7 @@
 #   along with markdown-textwrap (see COPYING).  If not, see
 #   <http://www.gnu.org/licenses/>.
 
+import argparse
 import re
 import textwrap
 
@@ -516,4 +517,34 @@ class TWMarkdown(mistune.Markdown):
 
 
 def main():
-    print('USAGE: md_tw 72 file.md file2.md [...]')
+    def parse_args():
+        parser = argparse.ArgumentParser()
+
+        # Options for args.
+        w_opts = {
+            'type': int,
+            'dest':'width',
+            'default':72,
+            'help': 'Max. line width.  Default is 72.'
+            }
+        f_opts = {
+            'type': argparse.FileType('r'),
+            'help': 'File path of Markdown document.'
+            }
+
+        # Define expected args.
+        parser.add_argument('-w', '--width', **w_opts)
+        parser.add_argument('md_file', **f_opts)
+
+        # Parse 'em.
+        a = parser.parse_args()
+
+        return {'width': a.width, 'text': a.md_file.read()}
+
+    def wrap(text, width):
+        return TWMarkdown(tw_width=width)(text)
+
+    def out(text):
+        print('{}'.format(text))
+
+    return out(wrap(**parse_args()))
