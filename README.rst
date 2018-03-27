@@ -38,7 +38,7 @@ source
 
 ::
 
-   git clone git://git.ricketyspace.net/markdown-link-style.git
+   git clone git://git.ricketyspace.net/markdown-textwrap.git
 
 license
 -------
