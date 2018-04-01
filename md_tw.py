@@ -270,7 +270,7 @@ class TWRenderer(mistune.Renderer):
         return out
 
     def block_quote(self,  text):
-        out = '{}\n'.format(text.rstrip('>\n'))
+        out = '{}\n\n'.format(text)
         return out
 
     def block_html(self, html):
@@ -368,8 +368,32 @@ class TWMarkdown(mistune.Markdown):
         # Add prefix
         self._add_prefix('> ')
 
+        def process():
+            if self.token['type'] == 'text':
+                txt = self.renderer.tw_fill(self.tok_text())
+            else:
+                # Append subsequent indent.
+                txt = ''.join([
+                    self.tok().rstrip(),
+                    '\n',
+                    self.renderer.tw_get('subsequent_indent'),
+                    '\n'
+                ])
+
+            return txt
+
+        body = self.renderer.placeholder()
+        while self.pop()['type'] != 'block_quote_end':
+            body += process()
+
+        # Remove last trailing subsequent indent.
+        body = body.rstrip(
+            self.renderer.tw_get('subsequent_indent') +
+            '\n'
+        )
+
         # Render block quote
-        rendered_bq = super(TWMarkdown, self).output_block_quote()
+        rendered_bq = self.renderer.block_quote(body)
 
         # Remove prefix
         self._remove_prefix(len('> '))
