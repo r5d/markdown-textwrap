@@ -266,7 +266,7 @@ class TWRenderer(mistune.Renderer):
     def block_code(self, code, lang=None):
         out = '{}'.format(code)
         out = textwrap.indent(out, self.tw_get('initial_indent'),
-                              lambda line: True)
+                              lambda line: len(line.strip()) > 0)
         return out
 
     def block_quote(self,  text):
