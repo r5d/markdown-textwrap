@@ -415,10 +415,10 @@ class TWMarkdown(mistune.Markdown):
             if self.token['type'] == 'text':
                 txt = self.renderer.tw_fill(self.tok_text())
             else:
-                txt = self.tok()
+                txt = '\n' + self.tok()
 
             if rm_i_indent:
-                txt = txt.lstrip()
+                txt = txt.lstrip(self.renderer.tw_get('initial_indent'))
 
                 # Don't remove initial indent after processing first item.
                 rm_i_indent = False
@@ -440,6 +440,7 @@ class TWMarkdown(mistune.Markdown):
         # Process list item
         while self.pop()['type'] != 'list_item_end':
             body += process()
+        body = body.rstrip()
 
         # Render list item
         rendered_li = self.renderer.list_item(body)
