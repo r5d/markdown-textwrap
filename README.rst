@@ -49,7 +49,7 @@ Under `GNU General Public License version 3 or later`__.
 __ gplv3_
 
 
-help
-----
+help / bugs
+-----------
 
 Ping rsiddharth <s@ricketyspace.net>.
