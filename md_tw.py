@@ -356,6 +356,14 @@ class TWMarkdown(mistune.Markdown):
         if subseq:
             self.renderer.tw_set(subsequent_indent=p)
 
+    def output_heading(self):
+        rendered_heading = '{}{}'.format(
+            self.renderer.tw_get('initial_indent'),
+            super(TWMarkdown, self).output_heading()
+        )
+
+        return rendered_heading
+
     def output_block_quote(self):
         # Add prefix
         self._add_prefix('> ')
