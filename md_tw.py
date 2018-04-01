@@ -297,7 +297,7 @@ class TWRenderer(mistune.Renderer):
 
     def paragraph(self, text):
         out = self.tw_fill(text)
-        out = '{}\n{}\n'.format(out, self.tw_get('initial_indent').rstrip())
+        out = '{}\n\n'.format(out)
 
         return out
 
