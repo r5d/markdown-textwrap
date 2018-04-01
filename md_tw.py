@@ -462,7 +462,7 @@ class TWMarkdown(mistune.Markdown):
 
             txt = self.tok()
             if rm_i_indent:
-                txt = txt.lstrip()
+                txt = txt.lstrip(self.renderer.tw_get('initial_indent'))
 
                 # Don't remove initial indent after processing first item.
                 rm_i_indent = False
