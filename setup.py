@@ -38,7 +38,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 config = {
     'name': 'markdown-textwrap',
     'version': __version__,
-    'description': 'Texwrap Markdown Documents',
+    'description': 'Text wrap Markdown Documents',
     'long_description': long_description,
     'platforms': 'GNU/Linux',
     'url': 'https://git.ricketyspace.net/markdown-textwrap',
