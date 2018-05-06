@@ -1,7 +1,7 @@
 markdown-textwrap
 =================
 
-Petite program for text wrapping markdown_ documents.
+Text wrap markdown_ documents.
 
 .. _markdown: https://daringfireball.net/projects/markdown
 
@@ -10,7 +10,7 @@ install
 
 ::
 
-   pip3 install markdown-textwrap
+   pip install markdown-textwrap
 
 
 usage
@@ -52,4 +52,4 @@ __ gplv3_
 help / bugs
 -----------
 
-Ping rsiddharth <s@ricketyspace.net>.
+rsiddharth <s@ricketyspace.net>
